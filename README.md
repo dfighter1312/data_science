@@ -1,1 +1,3 @@
-# data_science
+# Data Science learning
+
+From Coursera - IBM
