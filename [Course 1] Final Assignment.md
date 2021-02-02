@@ -1,3 +1,4 @@
+# Final Assignment [Course 1]
 #### Based on the videos and the reading material, how would you define a data scientist and data science? *(3 marks)*
 According to the reading material, a data scientist is someone who finds solutions to problems by analyzing data using appropriate tools and then tells stories to communicate their findings to the relevant stakeholders. Data science is defined as what data scientists do.
 
