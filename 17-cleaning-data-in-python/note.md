@@ -19,7 +19,7 @@ Strings to integers
 sales = pd.read_csv('sales.csv')
 sales.dtypes
 ```
-
+Output:
 ```
 SalesOrderID  int64
 Revenue       object
@@ -30,9 +30,11 @@ dtype: object
 ```python
 # Print sum of all Revenue column
 sales['Revenue'].sum()
-"""
-Output: '23153$1457$36865$32474$472$27510$16158$5694$6876$40487$807$6893$9153$6895$4216..
-"""
+```
+Output:
+```
+'23153$1457$36865$32474$472$27510$16158$5694$6876$40487$807$6893$9153$6895$4216..
+```
 # Remove $ from Revenue column
 sales['Revenue'] = sales['Revenue'].str.strip('$')
 sales['Revenue'] = sales['Revenue'].astype('int')
@@ -95,7 +97,7 @@ movies.loc[movies['avg_rating'] > 5, 'avg_rating'] = 5
 assert movies['avg_rating'].max() <= 5    # No output mean it passed
 ```
 
-### Date range example
+#### Date range example
 ```python
 # Convert object to DateTime
 df['date'] = pd.to_datetime(df['date'])
@@ -130,7 +132,7 @@ Output (boolean Series):
 103 False
 ```
 ```python
-# FGet duplicate values
+# Get duplicate values
 df[duplicates]
 ```
 
