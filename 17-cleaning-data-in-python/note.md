@@ -112,7 +112,7 @@ df.drop(df[df['date'] > today_date].index, inplace=True)
 assert df.date.max().date() <= today_date
 ```
 
-### Uniqueness constraints
+### 3. Uniqueness constraints
 
 #### What are dupplicate values?
 
@@ -156,7 +156,101 @@ summaries = {'height': 'max', 'weight': 'mean'}
 height_weight = height_weight.groupby(by=column_names).agg(summaries).reset_index()
 ```
 
+## Chapter 2: Text and categorical data problems
 
+### 1. Membership constraints
 
+**Why?**: Data Entry Errors, Parsing Errors
 
+**How do we treat?**
+- Dropping data
+- Remapping categories
+- Inferring categories
+
+```python
+# We have study_data DataFrame with blood_type and categories DataFrame store all possible blood_type values.
+# Recall inner join and anti joins
+
+inconsistent_categories = set(study_data['blood_type']).difference(categories['blood_type'])
+
+# Get and print rows ith inconsistent categories
+inconsistent_rows = study_data['blood_type'].isin(inconsistent_categories)
+study_data[inconsistent_rows]
+
+# Dropping inconsistent categories
+consistent_data = study_data[~inconsistent_rows]
+```
+
+### 2. Categorical variables
+
+**What type of errors could we have?**
+
+#### Value inconsistency
+
+- Capitalization: use `.str.upper()`, `.str.lower()`
+- Trailing spaces: use `.str.strip()`
+
+#### Collapsing too many categories to few
+
+- Create categories out of data
+```python
+ranges = [0, 200000, 500000, np.inf]
+group_names = ['0-200K', '200K-500K', '500K+']
+
+# Create income group column
+df['income_group'] = pd.cut(df['household_income'], bins=ranges, labels=group_names)
+```
+
+- Map categories to fewer ones:
+```python
+mapping = {'11':'1', '12':'1', '13':'1', '21':'2', '22':'2'}
+df['label'] = df['label'].replace(mapping)
+```
+
+#### Making sure data is of type `category`
+
+### 3. Cleaning text data
+
+- Data inconsistency
+- Fixed length violations
+- Typos
+
+Note: Assert all numbers do not have "+" or "-"
+```python
+assert phone['Phone number'].str.contains('+|-').any() == False
+```
+
+Regular expression
+```python
+phones['Phone number'] = phones['Phone number'].str.replace(r'\D+', '')
+```
+
+## Chapter 3: Advanced data problems
+
+### 1. Uniformity
+
+- Metric conversion
+- Date Time format
+```python
+# Convert account_opened to datetime
+banking['account_opened'] = pd.to_datetime(banking['account_opened'],
+                                           # Infer datetime format
+                                           infer_datetime_format = True,
+                                           # Return missing value for error
+                                           errors = 'coerce') 
+# Get year of account opened
+banking['acct_year'] = banking['account_opened'].dt.strftime('%Y')
+```
+
+### 2. Cross field validation 
+
+### 3. Completeness
+
+## Chapter 4: Record linkage
+
+### 1. Comparing strings
+
+### 2. Generating pairs
+
+### 3. Linking DataFrames
 
