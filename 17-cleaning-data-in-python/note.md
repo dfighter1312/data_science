@@ -35,6 +35,7 @@ Output:
 ```
 '23153$1457$36865$32474$472$27510$16158$5694$6876$40487$807$6893$9153$6895$4216..
 ```
+```python
 # Remove $ from Revenue column
 sales['Revenue'] = sales['Revenue'].str.strip('$')
 sales['Revenue'] = sales['Revenue'].astype('int')
