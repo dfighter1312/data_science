@@ -293,7 +293,111 @@ plt.show()
 
 ### 1. Comparing strings
 
+**Why?**: to know whether there is a typo or not.
+
+**Minimum edit distance**: Least possible amount of steps needed to transition from one string to another. Eg: *reading* and *redaing* has minimum edit distance = 1.
+
+Possible packages: `ntlk`, `fuzzywuzzy`, `textdistance`
+
+```python
+# Compare between two strings
+from fuzzywuzzy import fuzz
+
+# Compare reeding vs reading
+fuzz.Wratio('Reeding', 'Reading')
+```
+
+Output:
+```86```
+The output is comparison score from 0 to 100, with 0 being not similar at all, 100 being an exact match.
+
+**Comparison with arrays**
+```python
+from fuzzywuzzy import process
+
+# Define string and array of possible matches
+string = "Houston Rockets vs Los Angelies Lakers"
+choice = pd.Series(['Rockets vs Lakers', 'Lakers vs Rockets',
+                    'Houson vs Los Angeles', 'Heat vs Bulls'])
+                    
+process.extract(string, choices, limit=2)
+```
+
+Output
+```[('Rockets vs Lakers', 86, 0), ('Lakers vs Rockets', 86, 1)]```
+
+**Collapsing categories with string matching**
+```python
+for state in categories['state']:
+  # Find potential matches in states with typoes
+  matches = process.extract(state, survey['state'], limit=survey.shape[0])
+  # For each potential match match
+  for potential_match in matches:
+    # If high similarity score
+    if potential_match[1] >= 80:
+        # Replace typo with correct category
+        survey.loc[survey['state'] == potential_match[0], 'state'] = state
+```
+
 ### 2. Generating pairs
 
+**Record linkage**: the cat of linking data from different sources regarding the same entity.
+
+Steps:
+- Generate pairs
+- Compare pairs
+- Score pairs
+- Link data
+
+Use `recordlinkage` package.
+
+Example: 2 dataframes `census_A` and `census_B`.
+```python
+import recordlinkage
+
+# Create indexing object
+indexer = recordlinkage.Index()
+
+# Generate pairs blocked on state
+indexer.block('state')
+pairs = indexer.index(census_A, census_B)
+
+# Create a Compare object
+compare_cl = recordlinkage.Compare()
+
+# Find exact matches for pairs of date_of_birth and state
+compare_cl.exact('date_of_birth', 'date_of_birth', label='date_of_birth')
+compare_cl.exact('state', 'state', label='state')
+
+# Find similar matches for pairs
+compare_cl.string('surname', 'surname', threshold=0.85, label='surname')
+
+# Find matches
+potential_matches = compare_cl.compute(pairs, census_A, census_B)
+```
+
+
 ### 3. Linking DataFrames
+
+```python
+# Find good matches
+matches = potential_matches[potential_matches.sum(axis=1) >= 3]
+
+# Get indices from census_B only
+duplicate_rows = matches.index.get_level_values(1)
+print(census_B_index)
+```
+
+Output:
+```Index(['rec-2404-dup-0', 'rec-4178-dup-0', ... , 'rec-299-dup-0'])```
+
+```python
+# Finding duplicates in census_B
+census_B_duplicates = census_B[census_B.index.isin(duplicate_rows)]
+
+# Link the DataFrame
+full_census = census_A.append(census_B_new)
+```
+
+
 
