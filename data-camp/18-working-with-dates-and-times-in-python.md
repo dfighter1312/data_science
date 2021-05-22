@@ -43,7 +43,7 @@ print([d.isoformat()])    #Output: ['2017-11-05']
 
 print(d.strftime("%Y"))         #Output: 2017
 print(d.strftime("Year is %Y")  #Output: Year is 2017
-print(d.strftime(%Y/%m/%d")     #Output: 2017/11/05
+print(d.strftime("%Y/%m/%d")     #Output: 2017/11/05
 ```
 
 - `%a`	Tên ngày trong tuần viết tắt	Sun, Mon...
