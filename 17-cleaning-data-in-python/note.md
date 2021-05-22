@@ -244,7 +244,50 @@ banking['acct_year'] = banking['account_opened'].dt.strftime('%Y')
 
 ### 2. Cross field validation 
 
+The use of **multiple** fields in a dataset to sanity check data integrity.
+
+**What to do when we catch inconsistencies?**
+- Dropping data
+- Set to missing and impute
+- Apply rules from domain knowledge
+
 ### 3. Completeness
+
+One of the most common problems.
+
+Can be represented as `NA`, `nan`, `0`, `.`
+
+Caused by:
+- Technical error
+- Human error
+
+**How to find missing values?**
+
+Use `.isna()`, `.isna().sum()`
+
+Use `missingno` package
+
+```python
+import missingno as msno
+import matplotlib.pyplot as plt
+
+# Visualize missingness
+msno.matrix(df)
+plt.show()
+```
+
+**Missingness types**
+- Missing completely at random (MCAR): No systematic relationship between missing data and other vlaues. Data entry errors when inputting data.
+- Missing at random (MAR): Systematic relationship between missing dataa and other <span style="color:red;">observed</span> values. Eg: Missing ozone data for high temperatures.
+- Missing Not at Random (MNAR): Systematic relationship between missing data and <span style="color:red;">unobserved</span> values. Eg: Missing temperature values for high temperatures.
+
+**How to deal with misisng data?**
+- Simple approaches:
+  - Drop missing data
+  - Impute with statistical measures *(mean, median, mode..)*
+- More complex approaches:
+  - Imputing using an algorithmic approach
+  - Impute with machine learning models
 
 ## Chapter 4: Record linkage
 
