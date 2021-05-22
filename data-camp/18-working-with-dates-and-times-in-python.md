@@ -201,6 +201,10 @@ Timezones in Pandas
 
 `df.dt.tz_localize('America/New_York', ambiguos='NaT')`
 
+Convert the timezone
+
+`df.dt.tz_convert('Europe/London')`
+
 Datetime operation
 
 `.dt.year`, `.dt.weekday_name`
